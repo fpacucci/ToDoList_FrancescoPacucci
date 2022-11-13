@@ -1,0 +1,14 @@
+*{
+    background-color:whitesmoke;
+}
+
+.title{
+    text-align: center;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    padding-top: 20px;
+    color: rgb(57, 55, 58);
+}
+
+.mioTesto{
+    text-align: center;
+}
