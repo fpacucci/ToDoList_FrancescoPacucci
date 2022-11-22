@@ -1,129 +1,100 @@
-let box = document.querySelector('.box');
-let lista = document.querySelector('.lista');
-let bottone = document.querySelector('.bottone');
-let clear = document.querySelector('.cancella');
+const box = document.querySelector('.input_tutto');
+const input = document.querySelector('#input_singolo');
+const lista = document.querySelector('.lista');
+const bottone = document.querySelector('.bottone');
+const clear = document.querySelector('.cancella');
+
 let lista_todo = [];
 
-//function aggiungi(){
- //   lista.innerHTML="";
-   // lista_todo.forEach(function(item){
-     //   let li= document.createElement("li");
-       // li.innerHTML = item;
-        //lista.appendChild(li);
-  //  })
-//}
-function update_list(){
-   // lista_todo.push(box.value)
+function aggiungi(task, index){
+    
+ 
+  
+   const elemento_singolo = document.createElement("div");
+   elemento_singolo.classList.add("elemento");
+   lista.appendChild(elemento_singolo);
+   const input_elemento = document.createElement("input");
+        input_elemento.classList.add("text");
+        input_elemento.type ="text";
+        input_elemento.value = task;
+    elemento_singolo.appendChild(input_elemento);
+
+    const task_action_el = document.createElement("div");
+        task_action_el.classList.add("actions");
+        const did = document.createElement("button");
+        did.classList.add("did");
+        did.innerHTML='<ion-icon name="checkmark-circle-outline"></ion-icon>';
+        did.addEventListener("click", () => {
+            input_elemento.classList.toggle("barrato");
+            did.classList.toggle("sbiadito");
+        })
+        const edit = document.createElement("button");
+        edit.classList.add("edit");
+        edit.innerHTML='<ion-icon name="create-outline"></ion-icon>'
+        edit.addEventListener("click", () => {
+            input.value= lista_todo[index];
+            lista_todo.splice(index, 1);
+            lista.innerHTML="";
+             lista_todo.forEach((element, index) => {
+            aggiungi(element, index);
+            });
+            
+        })
+        const canc = document.createElement("button");
+        canc.classList.add("delete");
+        canc.innerHTML='<ion-icon name="close-circle-outline"></ion-icon>';
+        canc.addEventListener("click", () =>{
+            lista_todo.splice(index, 1);
+
+            lista.innerHTML="";
+             lista_todo.forEach((element, index) => {
+            aggiungi(element, index);
+    });
+        })
+
+        task_action_el.appendChild(did);
+        task_action_el.appendChild(edit);
+        task_action_el.appendChild(canc);
+
+        elemento_singolo.appendChild(task_action_el);
+        lista.appendChild(elemento_singolo);  
+        
+
+
+   // })
+}
+function update_list(task){
+    lista_todo.push(task)
 }
 
+
+
 bottone.addEventListener("click", function(){
-  //  update_list();
-  //  aggiungi();
-   // cancellainput();
+    const task= input.value;
+    if(!task){
+        alert("Please Enter Valid Value");
+        return;
+    }
+    update_list(task);
+    lista.innerHTML="";
+    lista_todo.forEach((element, index) => {
+        aggiungi(element, index);
+    });
+    input.value="";
+   // aggiungi(task);
+   //cancellainput();
 });
 
 function cancellatutto(){
-  // lista_todo.length=0;
-
+   lista_todo=[];
+   lista.innerHTML="";
+   
 }
 
 clear.addEventListener("click", function(){
-   // cancellatutto();
-    //aggiungi();
+    cancellatutto();
+    
 })
 
-function cancellainput(){
-    // aggiusta metodo
-}
-
-window.addEventListener('load', () => {
-      const form= document.querySelector("#input_tutto");
-    const input = document.querySelector("#nuovo_elemento");
-  const lista_ele = document.querySelector("#tasks");
-  const cancella = document.querySelector("#div_canc");
-  
-
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const task= input.value;
-
-        if(!task){
-            alert("Please Enter Valid Value");
-            return;
-        }
-
-        const task_el = document.createElement("div");
-        task_el.classList.add("task");
-
-        const task_content_el = document.createElement("div");
-        task_content_el.classList.add("content");
-        
 
 
-        task_el.appendChild(task_content_el);
-        const task_input_el = document.createElement("input");
-        task_input_el.classList.add("text");
-        task_input_el.type ="text";
-        task_input_el.value = task;
-        task_input_el.setAttribute("readonly", "readonly");
-
-        task_content_el.appendChild(task_input_el);
-
-        const task_action_el = document.createElement("div");
-        task_action_el.classList.add("actions");
-
-        const task_accept_el = document.createElement("button");
-        task_accept_el.classList.add("did");
-        task_accept_el.innerHTML ="DID";
-
-        const task_edit_el = document.createElement("button");
-        task_edit_el.classList.add("edit");
-        task_edit_el.innerHTML ="EDIT";
-
-        const task_delete_el = document.createElement("button");
-        task_delete_el.classList.add("delete");
-        task_delete_el.innerHTML ="DELETE";
-
-        task_action_el.appendChild(task_accept_el);
-        task_action_el.appendChild(task_edit_el);
-        task_action_el.appendChild(task_delete_el);
-        //task_delete_all_el.appendChild(task_delete_all_el);
-
-        task_el.appendChild(task_action_el);
-
-
-        lista_ele.appendChild(task_el);
-
-        input.value="";
-
-        task_edit_el.addEventListener('click', () =>{
-           if(task_edit_el.innerText.toLowerCase()=="edit"){
-            task_input_el.removeAttribute("readonly");
-            task_input_el.focus();
-            task_edit_el.innerText = "Save";    
-           } else {
-            task_input_el.setAttribute("readonly", "readonly");
-            task_edit_el.innerText ="Edit";
-           }
-            
-        });
-
-        task_delete_el.addEventListener('click', () => {
-            lista_ele.removeChild(task_el);
-        });
-
-        
-        task_delete_all_el.classList.add("cancella");
-
-        task_delete_all_el.addEventListener('click', ()=>{
-            
-        });
-
-        task_accept_el.addEventListener('click', () =>{
-            task_el.strike();
-        })
-
-        
-    })
-})
